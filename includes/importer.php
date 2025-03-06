@@ -52,8 +52,9 @@ function matrix_ci_import_component($block_type, $folder_name)
 
     $acf_contents = matrix_ci_download_file_contents($component['acf_file']);
     if ($acf_contents !== false) {
-      $acf_filename = basename($component['acf_file']);
-      file_put_contents($acf_dest_dir . $acf_filename, $acf_contents);
+      // Strip query parameters from the URL to determine a clean file name
+      $acf_filename = basename(parse_url($component['acf_file'], PHP_URL_PATH));
+      file_put_contents($acf_dest_dir . '/' . $acf_filename, $acf_contents);
     }
   }
 
@@ -69,16 +70,18 @@ function matrix_ci_import_component($block_type, $folder_name)
     ];
   }
 
-  // Determine final filename
+  // Determine final filename.
+  // We strip the query parameters from the template file URL.
+  $clean_template_url = parse_url($component['template_file'], PHP_URL_PATH);
   $rename_cb = $map_info['rename_callback'];
   if (! is_callable($rename_cb)) {
-    // If no rename callback, just keep original
-    $final_name = basename($component['template_file']);
+    // If no rename callback, just keep the basename of the clean URL.
+    $final_name = basename($clean_template_url);
   } else {
-    $final_name = call_user_func($rename_cb, $component['template_file'], $folder_name);
+    $final_name = call_user_func($rename_cb, $clean_template_url, $folder_name);
   }
 
-  file_put_contents($template_dest_dir . $final_name, $template_contents);
+  file_put_contents($template_dest_dir . '/' . $final_name, $template_contents);
 
   return [
     'success' => true,

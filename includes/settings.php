@@ -72,7 +72,7 @@ function matrix_ci_register_token_setting()
  */
 function matrix_ci_token_section_callback()
 {
-  echo '<p>Enter your GitHub token below. Leave blank to keep the current token.</p>';
+  echo '<p>Enter your GitHub token below.</p>';
 }
 
 /**

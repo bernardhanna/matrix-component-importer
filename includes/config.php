@@ -18,21 +18,21 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'template-parts/404/',
-      'rename_callback' => 'matrix_ci_rename_404',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     'banner' => [
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'template-parts/header/',
-      'rename_callback' => 'matrix_ci_rename_banner',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     'back-to-top' => [
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'template-parts/footer/',
-      'rename_callback' => 'matrix_ci_rename_footer',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     // Blog
@@ -40,7 +40,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'template-parts/blog/',
-      'rename_callback' => 'matrix_ci_rename_blog',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     // Breadcrumbs
@@ -48,7 +48,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'template-parts/header/',
-      'rename_callback' => 'matrix_ci_rename_breadcrumbs',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //Contact
@@ -56,7 +56,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => true,
       'acf_dest'        => 'acf-fields/partials/blocks/',
       'template_dest'   => 'template-parts/flexi/',
-      'rename_callback' => 'matrix_ci_rename_contact',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //content
@@ -64,14 +64,14 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => true,
       'acf_dest'        => 'acf-fields/partials/blocks/',
       'template_dest'   => 'template-parts/flexi/',
-      'rename_callback' => 'matrix_ci_rename_content',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     'copyright' => [
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'template-parts/footer/',
-      'rename_callback' => 'matrix_ci_rename_footer',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //CTA
@@ -79,7 +79,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => true,
       'acf_dest'        => 'acf-fields/partials/blocks/',
       'template_dest'   => 'template-parts/flexi/',
-      'rename_callback' => 'matrix_ci_rename_cta',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //custom-post-types
@@ -87,7 +87,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'inc/cpts/post-types',
-      'rename_callback' => 'matrix_ci_rename_custom_post_types',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //faq
@@ -95,7 +95,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => true,
       'acf_dest'        => 'acf-fields/partials/blocks/',
       'template_dest'   => 'template-parts/flexi/',
-      'rename_callback' => 'matrix_ci_rename_faq',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //features
@@ -103,7 +103,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => true,
       'acf_dest'        => 'acf-fields/partials/blocks/',
       'template_dest'   => 'template-parts/flexi/',
-      'rename_callback' => 'matrix_ci_rename_features',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     // Footer (multiple sub-types like newsletter, back-to-top, etc.)
@@ -111,7 +111,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'template-parts/footer/',
-      'rename_callback' => 'matrix_ci_rename_footer',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     // gallery
@@ -119,7 +119,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => true,
       'acf_dest'        => 'acf-fields/partials/blocks/',
       'template_dest'   => 'template-parts/flexi/',
-      'rename_callback' => 'matrix_ci_rename_gallery',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     // Hero
@@ -127,7 +127,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => true,
       'acf_dest'        => 'acf-fields/partials/hero/',
       'template_dest'   => 'template-parts/hero/',
-      'rename_callback' => 'matrix_ci_rename_hero',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //intro
@@ -135,7 +135,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => true,
       'acf_dest'        => 'acf-fields/partials/blocks/',
       'template_dest'   => 'template-parts/flexi/',
-      'rename_callback' => 'matrix_ci_rename_intro',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     // Navigation Desktop
@@ -143,7 +143,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'template-parts/header/',
-      'rename_callback' => 'matrix_ci_rename_navigation',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     // Navigation Mobile
@@ -151,7 +151,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'template-parts/header/navbar',
-      'rename_callback' => 'matrix_ci_rename_navigation',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //Newsletter Signup Form
@@ -159,7 +159,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'template-parts/footer/',
-      'rename_callback' => 'matrix_ci_rename_footer',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //pagination
@@ -167,7 +167,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'inc/',
-      'rename_callback' => 'matrix_ci_rename_pagination',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     // Single Hero (example)
@@ -175,7 +175,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => true,
       'acf_dest'        => 'acf-fields/partials/hero/',
       'template_dest'   => 'template-parts/single/',
-      'rename_callback' => 'matrix_ci_rename_hero',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //sitemap
@@ -183,7 +183,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'templates/',
-      'rename_callback' => 'matrix_ci_rename_sitemap',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //taxonomy
@@ -191,7 +191,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'inc/cpts/taxonomies/',
-      'rename_callback' => 'matrix_ci_rename_taxonomy',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //team
@@ -199,7 +199,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => true,
       'acf_dest'        => 'acf-fields/partials/blocks/',
       'template_dest'   => 'template-parts/flexi/',
-      'rename_callback' => 'matrix_ci_rename_team',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //testimonials
@@ -207,7 +207,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => true,
       'acf_dest'        => 'acf-fields/partials/blocks/',
       'template_dest'   => 'template-parts/flexi/',
-      'rename_callback' => 'matrix_ci_rename_testimonials',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //topbar
@@ -215,7 +215,7 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => false,
       'acf_dest'        => '',
       'template_dest'   => 'template-parts/header/',
-      'rename_callback' => 'matrix_ci_rename_topbar',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
     //team
@@ -223,58 +223,19 @@ function matrix_ci_get_block_type_map()
       'has_acf'         => true,
       'acf_dest'        => 'acf-fields/partials/blocks/',
       'template_dest'   => 'template-parts/flexi/',
-      'rename_callback' => 'matrix_ci_rename_team',
+      'rename_callback' => 'matrix_ci_generic_rename',
     ],
 
   ];
 }
 
 /**
- * Example rename callback for 404: always call it "404.php"
+ * Generic rename callback: use the folder name as the file name.
  */
-function matrix_ci_rename_404($download_url, $folder_name)
+function matrix_ci_generic_rename($download_url, $folder_name)
 {
-  return '404.php';
-}
-
-/**
- * Example rename callback for blog: always call it "index.php"
- */
-function matrix_ci_rename_blog($download_url, $folder_name)
-{
-  return 'index.php';
-}
-
-/**
- * Example rename callback for footer blocks.
- * If the sub-subfolder is "newsletter", you might want "footer-newsletter.php".
- * If it's "back-to-top", "footer-back-to-top.php".
- * 
- * This is just one approach. It depends on how your GitHub directory is named.
- * 
- * For instance, if your GitHub path is: footer/newsletter/001/footer-newsletter.php,
- * you might parse `$download_url` or `$folder_name` to figure out "newsletter".
- */
-function matrix_ci_rename_footer($download_url, $folder_name)
-{
-  // In your question, the actual file is named "footer-newsletter.php" always,
-  // so maybe we just return that same base name:
-  return basename($download_url);
-}
-
-/**
- * Example rename for navigation: always "navigation.php"
- */
-function matrix_ci_rename_navigation($download_url, $folder_name)
-{
-  return 'navigation.php';
-}
-
-/**
- * Example rename for hero or single-hero:
- * Keep the original filename, e.g. hero_001.php, or rename if you prefer.
- */
-function matrix_ci_rename_hero($download_url, $folder_name)
-{
-  return basename($download_url);
+  // Remove any query parameters from the URL.
+  $clean_url = strtok($download_url, '?');
+  // Return the base file name as on GitHub.
+  return basename($clean_url);
 }
