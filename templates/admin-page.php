@@ -2,12 +2,22 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 $all_components = get_option( 'matrix_ci_components_grouped', [] );
-$block_types    = array_keys( $all_components ); // e.g. ['404','blog','footer','hero','navigation',...]
+
+// If flat, regroup
+if ( isset( $all_components[0] ) && is_array( $all_components[0] ) && isset( $all_components[0]['type'] ) ) {
+    $grouped = [];
+    foreach ( $all_components as $comp ) {
+        $grouped[ $comp['type'] ][] = $comp;
+    }
+    $all_components = $grouped;
+}
+
+$block_types = array_keys( $all_components );
 ?>
 <div class="wrap matrix-ci-admin-page">
     <h1>Matrix Block Library</h1>
 
-    <button id="matrix-ci-rescan" class="button button-primary">Rescan GitHub</button>
+    <button id="matrix-ci-rescan" class="button button-primary">Rescan Re</button>
 
     <div class="matrix-ci-tab-container">
 
@@ -36,7 +46,7 @@ $block_types    = array_keys( $all_components ); // e.g. ['404','blog','footer',
                             <div class="matrix-ci-grid-item">
                                 <div class="matrix-ci-grid-item-preview">
                                     <?php if ( ! empty($comp['preview']) ): ?>
-                                        <img src="<?php echo esc_url($comp['preview']); ?>" alt="Preview">
+                                        <img src="<?php echo esc_url( admin_url( 'admin-ajax.php?action=matrix_ci_preview_proxy&file=' . urlencode( $comp['preview'] ) ) ); ?>" alt="Preview">
                                     <?php else: ?>
                                         <div class="no-preview">No Preview</div>
                                     <?php endif; ?>

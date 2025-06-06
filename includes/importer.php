@@ -1,109 +1,113 @@
 <?php
 if (! defined('ABSPATH')) exit;
 
-/**
- * Imports a specific block type + folder combination.
- *
- * @param string $block_type   e.g. 'footer', 'hero', 'navigation'
- * @param string $folder_name  e.g. '001', '002'
- * @return array  [ 'success' => bool, 'message' => string ]
- */
 function matrix_ci_import_component($block_type, $folder_name)
 {
-  $all = matrix_ci_get_stored_components();
-  if (empty($all[$block_type])) {
-    return [
-      'success' => false,
-      'message' => "No components found for type: $block_type"
-    ];
-  }
+    $type_map = matrix_ci_get_block_type_map();
 
-  // Find the matching subfolder
-  $component = null;
-  foreach ($all[$block_type] as $entry) {
-    if ($entry['folder'] === $folder_name) {
-      $component = $entry;
-      break;
+    if (! isset($type_map[ $block_type ] )) {
+        return [
+            'success' => false,
+            'message' => "Unknown block type: $block_type",
+        ];
     }
-  }
-  if (! $component) {
-    return [
-      'success' => false,
-      'message' => "Component '$folder_name' not found in type '$block_type'."
-    ];
-  }
 
-  // Get info from config
-  $type_map = matrix_ci_get_block_type_map();
-  if (empty($type_map[$block_type])) {
-    return [
-      'success' => false,
-      'message' => "Block type '$block_type' not configured."
-    ];
-  }
-  $map_info = $type_map[$block_type];
+    $stored_components = matrix_ci_get_stored_components();
 
-  $theme_path = get_stylesheet_directory(); // e.g. /wp-content/themes/matrix-starter
-
-  // If block has ACF, import it
-  if ($map_info['has_acf'] && ! empty($component['acf_file'])) {
-    $acf_dest_dir = $theme_path . '/' . $map_info['acf_dest'];
-    wp_mkdir_p($acf_dest_dir);
-
-    $acf_contents = matrix_ci_download_file_contents($component['acf_file']);
-    if ($acf_contents !== false) {
-      // Strip query parameters from the URL to determine a clean file name
-      $acf_filename = basename(parse_url($component['acf_file'], PHP_URL_PATH));
-      file_put_contents($acf_dest_dir . '/' . $acf_filename, $acf_contents);
+    if (! isset($stored_components[ $block_type ])) {
+        return [
+            'success' => false,
+            'message' => "No stored components found for type: $block_type",
+        ];
     }
-  }
 
-  // Import front-end template
-  $template_dest_dir = $theme_path . '/' . $map_info['template_dest'];
-  wp_mkdir_p($template_dest_dir);
+    // Find matching component
+    $component = null;
 
-  $template_contents = matrix_ci_download_file_contents($component['template_file']);
-  if ($template_contents === false) {
+    foreach ( $stored_components[ $block_type ] as $comp ) {
+        if ( $comp['folder'] === $folder_name ) {
+            $component = $comp;
+            break;
+        }
+    }
+
+    if ( ! $component ) {
+        return [
+            'success' => false,
+            'message' => "Component not found for type: $block_type / folder: $folder_name",
+        ];
+    }
+
+    $acf_file      = $component['acf_file'] ?? '';
+    $template_file = $component['template_file'] ?? '';
+
+    $type_info = $type_map[ $block_type ];
+    $rename_callback = $type_info['rename_callback'];
+
+    // Import ACF file
+    if ( ! empty( $acf_file ) && $type_info['has_acf'] ) {
+        $acf_dest_dir = get_stylesheet_directory() . '/' . $type_info['acf_dest'];
+        $acf_filename = call_user_func( $rename_callback, $acf_file, $folder_name );
+
+        if ( ! file_exists( $acf_dest_dir ) ) {
+            wp_mkdir_p( $acf_dest_dir );
+        }
+
+        $acf_result = matrix_ci_download_file( $acf_file, $acf_dest_dir . $acf_filename );
+
+        if ( ! $acf_result ) {
+            return [
+                'success' => false,
+                'message' => "Failed to download ACF file.",
+            ];
+        }
+    }
+
+    // Import Template file
+    if ( ! empty( $template_file ) ) {
+        $template_dest_dir = get_stylesheet_directory() . '/' . $type_info['template_dest'];
+        $template_filename = call_user_func( $rename_callback, $template_file, $folder_name );
+
+        if ( ! file_exists( $template_dest_dir ) ) {
+            wp_mkdir_p( $template_dest_dir );
+        }
+
+        $template_result = matrix_ci_download_file( $template_file, $template_dest_dir . $template_filename );
+
+        if ( ! $template_result ) {
+            return [
+                'success' => false,
+                'message' => "Failed to download Template file.",
+            ];
+        }
+    }
+
     return [
-      'success' => false,
-      'message' => 'Failed to download template file.'
+        'success' => true,
+        'message' => "Component '$block_type / $folder_name' imported successfully.",
     ];
-  }
-
-  // Determine final filename.
-  // We strip the query parameters from the template file URL.
-  $clean_template_url = parse_url($component['template_file'], PHP_URL_PATH);
-  $rename_cb = $map_info['rename_callback'];
-  if (! is_callable($rename_cb)) {
-    // If no rename callback, just keep the basename of the clean URL.
-    $final_name = basename($clean_template_url);
-  } else {
-    $final_name = call_user_func($rename_cb, $clean_template_url, $folder_name);
-  }
-
-  file_put_contents($template_dest_dir . '/' . $final_name, $template_contents);
-
-  return [
-    'success' => true,
-    'message' => "Imported $block_type / $folder_name successfully."
-  ];
 }
 
-/**
- * Helper to download raw file contents from GitHub.
- */
-function matrix_ci_download_file_contents($file_url)
+function matrix_ci_download_file( $url, $dest_path )
 {
-  $resp = wp_remote_get($file_url, [
-    'headers' => ['User-Agent' => 'Matrix-CI'],
-    'timeout' => 20,
-  ]);
-  if (is_wp_error($resp)) {
-    return false;
-  }
-  $code = wp_remote_retrieve_response_code($resp);
-  if ($code !== 200) {
-    return false;
-  }
-  return wp_remote_retrieve_body($resp);
+    $response = wp_remote_get( $url, [
+        'timeout' => 30,
+        'headers' => [
+            'User-Agent' => 'Matrix-CI',
+        ],
+    ]);
+
+    if ( is_wp_error( $response ) ) {
+        error_log( "Matrix CI: Failed to download $url: " . $response->get_error_message() );
+        return false;
+    }
+
+    $body = wp_remote_retrieve_body( $response );
+
+    if ( empty( $body ) ) {
+        error_log( "Matrix CI: Empty body for $url" );
+        return false;
+    }
+
+    return file_put_contents( $dest_path, $body ) !== false;
 }
