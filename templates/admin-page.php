@@ -17,7 +17,7 @@ $block_types = array_keys( $all_components );
 <div class="wrap matrix-ci-admin-page">
     <h1>Matrix Block Library</h1>
 
-    <button id="matrix-ci-rescan" class="button button-primary">Rescan Re</button>
+    <button id="matrix-ci-rescan" class="button button-primary">Rescan</button>
 
     <div class="matrix-ci-tab-container">
 

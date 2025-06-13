@@ -100,10 +100,12 @@ function matrix_ci_get_block_type_map() {
             'rename_callback' => 'matrix_ci_generic_rename',
         ],
         'navigation-mobile' => [
-            'has_acf' => false,
-            'acf_dest' => '',
-            'template_dest' => 'template-parts/header/navbar',
-            'rename_callback' => 'matrix_ci_generic_rename',
+        'has_acf'         => false,
+        'acf_dest'        => '',
+        'template_dest'   => 'template-parts/header/navbar/',
+        'rename_callback' => function($url, $folder) {
+            return 'mobile.php'; // Force correct filename
+        },
         ],
         'newsletter' => [
             'has_acf' => false,
